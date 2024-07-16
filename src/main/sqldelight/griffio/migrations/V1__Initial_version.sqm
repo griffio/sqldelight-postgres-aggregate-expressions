@@ -1,0 +1,42 @@
+CREATE TABLE Authors (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  fullname TEXT,
+  bio TEXT,
+  image TEXT
+);
+
+CREATE TABLE Articles (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  slug TEXT,
+  title TEXT,
+  description TEXT,
+  body TEXT,
+  author_id INTEGER REFERENCES Authors(id),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP
+);
+
+CREATE TABLE Tags (
+  id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  article_id INTEGER REFERENCES Articles(id),
+  tag TEXT
+);
+
+INSERT INTO Authors (fullname, bio, image) VALUES
+  ('John Doe', 'John Doe is a prolific writer and blogger.', 'https://example.com/john-doe.jpg'),
+  ('Jane Smith', 'Jane Smith is a tech journalist with over 10 years of experience.', 'https://example.com/jane-smith.jpg'),
+  ('Bob Johnson', 'Bob Johnson is a freelance writer and editor.', 'https://example.com/bob-johnson.jpg');
+
+INSERT INTO Articles (slug, title, description, body, author_id) VALUES
+  ('introduction-to-kotlin', 'Introduction to Kotlin', 'Learn the basics of the Kotlin programming language.', 'This article will cover the fundamentals of Kotlin...', 1),
+  ('react-vs-angular', 'React vs Angular: Which is Better?', 'A comparison of the two popular front-end frameworks.', 'React and Angular are both widely used for building web applications...', 2),
+  ('git-best-practices', 'Git Best Practices', 'Follow these best practices for better Git workflow.', 'Git is a powerful version control system...', 3);
+
+INSERT INTO Tags (article_id, tag) VALUES
+  (1, 'kotlin'),
+  (1, 'programming'),
+  (2, 'react'),
+  (2, 'angular'),
+  (2, 'javascript'),
+  (3, 'git'),
+  (3, 'version-control');

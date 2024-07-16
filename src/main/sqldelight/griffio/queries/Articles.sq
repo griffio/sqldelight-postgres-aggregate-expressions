@@ -1,0 +1,21 @@
+getArticlesWithAuthor:
+SELECT Articles.id, Articles.slug, Articles.title, Articles.description,
+COALESCE (string_agg (DISTINCT Tags.tag, ',' ORDER BY Tags.tag DESC)
+FILTER (WHERE Tags.tag IS NOT NULL)) AS articleTags
+FROM Articles
+LEFT JOIN Tags ON Articles.id = Tags.article_id
+JOIN Authors ON Articles.author_id = Authors.id
+GROUP BY Articles.id, Authors.id;
+
+getArticles:
+SELECT
+  Articles.id,
+  Articles.slug,
+  Articles.title,
+  Articles.description,
+  array_agg(DISTINCT Tags.tag) AS tags
+FROM
+  Articles
+  LEFT JOIN Tags ON Articles.id = Tags.article_id
+GROUP BY
+  Articles.id;
